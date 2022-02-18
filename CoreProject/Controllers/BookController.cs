@@ -131,13 +131,12 @@ namespace CoreProject.Controllers
         }
 
         [HttpPost]
-        [HttpPost]
         public IActionResult ManageAuthors(BookAuthorVM bookAuthorVM)
         {
             if (bookAuthorVM.BookAuthor.Book_Id != 0 && bookAuthorVM.BookAuthor.Author_Id != 0)
             {
-                _db.BookAuthors.Add(bookAuthorVM.BookAuthor);
-                _db.SaveChanges();
+                _dbModel.BookAuthors.Add(bookAuthorVM.BookAuthor);
+                _dbModel.SaveChanges();
             }
             return RedirectToAction(nameof(ManageAuthors), new { @id = bookAuthorVM.BookAuthor.Book_Id });
         }
