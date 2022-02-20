@@ -1,0 +1,39 @@
+﻿@model CoreProject_Models.Models.Temp;
+
+@using (Html.BeginForm("DisplayForm", "Author", FormMethod.Post , new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.TextBoxFor(x => x.DateOfBirth, new { @name= "DateOfBirth",  @class = "form-control mydatepicker", @placeholder = "dd.mm.yyyy" })
+    @Html.TextBoxFor(x => x.Firstname, new { @class = "form-control", @value = "parth" })
+
+    <button type="submit" class="btn btn-primary form-control">Update</button>
+}
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/js/jquery-ui-1.13.1/jquery-ui.min.js"></script>
+
+<script>
+
+
+    $(function () { // will trigger when the document is ready
+        //Initialise all datepickers whose class name are mydatepicker
+        // Display them with a button which containes a small calendar icon.
+        $(".mydatepicker")
+            .datepicker({
+                dateFormat: "dd.mm.yy",
+                changeYear: true,
+                yearRange: "-70:+0",//year selection is possible from starting 70 years before now
+                showOn: "both"
+            })
+            .next("button").button({
+                icons: { primary: "ui-icon-calendar" },
+                label: "Select Date",
+                text: false
+            })
+            .addClass("btn btn-default")
+            .find('.ui-button-text')
+            .css({
+                'visibility': 'hidden',
+                'display': 'inline'
+            });
+    });
+</script>
