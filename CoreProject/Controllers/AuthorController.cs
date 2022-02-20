@@ -36,7 +36,6 @@ namespace CoreProject.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Upsert(Author authors)
         {
             if (ModelState.IsValid)

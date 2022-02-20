@@ -115,10 +115,14 @@ namespace CoreProject.Controllers
 
         public IActionResult ManageAuthors(int id)
         {
-            var bookAuthor = new BookAuthorVM()
+            var bookAuthor = new BookAuthorVM
             {
-                BookAuthorsList = _dbModel.BookAuthors.Include(x => x.Author).Include(x => x.Book).Where(x => x.Book_Id == id).ToList(),
-                Book = _dbModel.Books.FirstOrDefault(x => x.Book_Id == id)
+                BookAuthorsList = _dbModel.BookAuthors.Include(u => u.Author).Include(u => u.Book).Where(u => u.Book_Id == id).ToList(),
+                BookAuthor = new BookAuthor()
+                {
+                    Book_Id = id
+                },
+                Book = _dbModel.Books.FirstOrDefault(u => u.Book_Id == id)
             };
             var assignedAuthors = bookAuthor.BookAuthorsList.Select(x => x.Author_Id).ToList();
             var authorList = _dbModel.Authors.Where(x => !assignedAuthors.Contains(x.Author_Id)).ToList();
@@ -139,6 +143,19 @@ namespace CoreProject.Controllers
                 _dbModel.SaveChanges();
             }
             return RedirectToAction(nameof(ManageAuthors), new { @id = bookAuthorVM.BookAuthor.Book_Id });
+        }
+
+        [HttpPost]
+        public IActionResult RemoveAuthors(int? authorId, BookAuthorVM bookAuthorVM)
+        {
+            int bookId = bookAuthorVM.Book.Book_Id;
+            var bookAuthor = _dbModel.BookAuthors.FirstOrDefault(x => x.Author_Id == authorId && x.Book_Id == bookAuthorVM.Book.Book_Id);
+            if(bookAuthor !=null)
+            {
+                _dbModel.BookAuthors.Remove(bookAuthor);
+                _dbModel.SaveChanges();
+            }
+            return RedirectToAction("ManageAuthors", new { id = bookId });
         }
 
         public IActionResult PlayGround()
