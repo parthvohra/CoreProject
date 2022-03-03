@@ -1,4 +1,5 @@
 ﻿@model CoreProject_Models.Models.Author
+@using System.Globalization;
 @{
     var title = "Create Author";
 }
@@ -42,7 +43,7 @@
                 <div class="col-8">
                     @if (Model.Author_Id != 0)
                     {
-                        <input asp-for="DateofBirth" placeholder="mm/dd/yyyy" id="datepicker_dob" type="text" class="form-control" />
+                        <input asp-for="DateofBirth" value="@Convert.ToDateTime(Model.DateofBirth,CultureInfo.InvariantCulture).ToString("MM/dd/yyyy")" placeholder="mm/dd/yyyy" id="datepicker_dob" type="text" class="form-control" />
                     }
                     else
                     {
