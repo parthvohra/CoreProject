@@ -74,7 +74,7 @@ namespace CoreProject.Controllers
             var books = new BookVM();
             if (id != null)
             {
-                books.Book = _dbModel.Books.Include(a=>a.BookDetail).FirstOrDefault(x => x.Book_Id.Equals(id));
+                books.Book = _dbModel.Books.Include(a => a.BookDetail).FirstOrDefault(x => x.Book_Id.Equals(id));
                 //books.Book.BookDetail = _dbModel.BookDetails.FirstOrDefault(x => x.BookDetail_Id == id);
                 if (books == null)
                 {
@@ -126,7 +126,7 @@ namespace CoreProject.Controllers
             };
             var assignedAuthors = bookAuthor.BookAuthorsList.Select(x => x.Author_Id).ToList();
             var authorList = _dbModel.Authors.Where(x => !assignedAuthors.Contains(x.Author_Id)).ToList();
-            bookAuthor.AuthorsList = authorList.Select(x => new SelectListItem 
+            bookAuthor.AuthorsList = authorList.Select(x => new SelectListItem
             {
                 Text = x.FullName,
                 Value = x.Author_Id.ToString()
@@ -150,7 +150,7 @@ namespace CoreProject.Controllers
         {
             int bookId = bookAuthorVM.Book.Book_Id;
             var bookAuthor = _dbModel.BookAuthors.FirstOrDefault(x => x.Author_Id == authorId && x.Book_Id == bookAuthorVM.Book.Book_Id);
-            if(bookAuthor !=null)
+            if (bookAuthor != null)
             {
                 _dbModel.BookAuthors.Remove(bookAuthor);
                 _dbModel.SaveChanges();
@@ -160,23 +160,28 @@ namespace CoreProject.Controllers
 
         public IActionResult PlayGround()
         {
-            
-                var book1 = _dbModel.Books.Include(x => x.BookDetail).FirstOrDefault(a => a.Book_Id == 2);
-                book1.BookDetail.NumberOfPages = 2222;
-                _dbModel.Books.Update(book1);
-                _dbModel.SaveChanges();
+
+            //    var book1 = _dbModel.Books.Include(x => x.BookDetail).FirstOrDefault(a => a.Book_Id == 2);
+            //    book1.BookDetail.NumberOfPages = 2222;
+            //    _dbModel.Books.Update(book1);
+            //    _dbModel.SaveChanges();
 
 
-                var book2 = _dbModel.Books.Include(x => x.BookDetail).FirstOrDefault(a => a.Book_Id == 2);
-                book2.BookDetail.Weight = 3333;
-                _dbModel.Books.Attach(book2);
-                _dbModel.SaveChanges();
+            //    var book2 = _dbModel.Books.Include(x => x.BookDetail).FirstOrDefault(a => a.Book_Id == 2);
+            //    book2.BookDetail.Weight = 3333;
+            //    _dbModel.Books.Attach(book2);
+            //    _dbModel.SaveChanges();
 
 
-            var category = _dbModel.Categories.FirstOrDefault();
-            _dbModel.Entry(category).State = EntityState.Modified;
-            _dbModel.SaveChanges();
+            //var category = _dbModel.Categories.FirstOrDefault();
+            //_dbModel.Entry(category).State = EntityState.Modified;
+            //_dbModel.SaveChanges();
+            var list = _dbModel.BookDetailsFromViews.ToList();
+            var bookDetail = _dbModel.Books.FromSqlRaw("select * from Books where Book_Id = {0}", 1).ToList();
+            var id = 1;
+            var bookDetaisl = _dbModel.Books.FromSqlInterpolated($"select * from Books where Book_Id = {id}").ToList();
 
+            var booksProc = _dbModel.Books.FromSqlInterpolated($"exec proc_GetBookDetails {id}");
             return RedirectToAction("Index");
         }
     }

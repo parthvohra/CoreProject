@@ -13,6 +13,7 @@ namespace CoreProject_DataAccess.Data
         //{
         //}
 
+        public DbSet<BookDetailsFromView> BookDetailsFromViews { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Book> Books { get; set; }
@@ -51,6 +52,8 @@ namespace CoreProject_DataAccess.Data
             modelBuilder.ApplyConfiguration(new FluentAuthorConfig());
             modelBuilder.ApplyConfiguration(new FluentBookDetailConfig());
             modelBuilder.ApplyConfiguration(new FluentPublisherConfig());
+
+            modelBuilder.Entity<BookDetailsFromView>().HasNoKey().ToView("GetAllBookDetails");
         }
     }
 }
